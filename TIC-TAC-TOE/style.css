@@ -1,0 +1,155 @@
+/* ===== Color variables (light and dark mode) ===== */
+:root {
+  --text: #ffffff;
+  --card: rgba(255, 255, 255, 0.16);
+  --cell: rgba(255, 255, 255, 0.85);
+  --cell-text: #2b2d42;
+  --bg1: #7f00ff;
+  --bg2: #e100ff;
+  --bg3: #00c6ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card: rgba(0, 0, 0, 0.35);
+    --cell: rgba(255, 255, 255, 0.12);
+    --cell-text: #ffffff;
+    --bg1: #1b0b4d;
+    --bg2: #5b1a8f;
+    --bg3: #0a4c7a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; margin: 0; }
+
+/* ===== Beautiful animated gradient background ===== */
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 16px;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3));
+  background-size: 300% 300%;
+  animation: flow 14s ease infinite;
+}
+
+@keyframes flow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== Game card ===== */
+.game {
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 24px;
+  width: min(92vw, 380px);
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+h1 { margin: 0 0 6px; font-size: 1.6rem; }
+h2 { margin: 20px 0 8px; font-size: 1rem; opacity: 0.9; }
+
+#status {
+  min-height: 1.6em;
+  margin: 8px 0 14px;
+  font-weight: 600;
+}
+
+#score {
+  display: flex;
+  justify-content: space-around;
+  font-size: 0.9rem;
+  margin-bottom: 14px;
+}
+
+/* ===== Board and boxes ===== */
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.cell {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 16px;
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: var(--cell);
+  color: var(--cell-text);
+  cursor: pointer;
+  transition: transform 0.15s, background 0.3s;
+}
+
+.cell:hover:not(:disabled) { transform: scale(1.06); }
+.cell:disabled { cursor: not-allowed; }
+
+/* Human (X): background color is set from JavaScript on every move */
+.cell.x {
+  color: #fff;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* AI (O) */
+.cell.o {
+  background: #2b2d42;
+  color: #ffd166;
+}
+
+/* Winning line animation */
+.cell.win { animation: pulse 0.6s ease infinite alternate; }
+
+@keyframes pulse {
+  to { transform: scale(1.1); box-shadow: 0 0 18px #fff; }
+}
+
+/* ===== Buttons ===== */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+button#restart,
+button#clear {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #ffd166;
+  color: #2b2d42;
+}
+
+button#clear.secondary {
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--text);
+}
+
+/* ===== History list (from the database) ===== */
+#history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+#history li {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 12px;
+  margin-bottom: 4px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.12);
+}
